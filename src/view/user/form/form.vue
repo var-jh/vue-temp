@@ -1,0 +1,75 @@
+<template>
+  <Form ref="formValidate"
+        :model="formData"
+        :rules="ruleValidate"
+        :label-width="80">
+
+    <FormItem label="用户名"
+              prop="user">
+      <Input type="text"
+             v-model="formData.user"
+             placeholder="请输入用户名"></Input>
+    </FormItem>
+    <FormItem label="用户名"
+              prop="pass">
+      <Input type="password"
+             v-model="formData.pass"
+             placeholder="请填写密码"></Input>
+    </FormItem>
+    <FormItem label="城市"
+              prop="city">
+      <Select v-model="formData.city"
+              placeholder="请选择城市">
+        <Option v-for="item in cityList"
+                :value="item.value"
+                :key="item.value"></Option>
+      </Select>
+    </FormItem>
+    <FormItem label="日期"
+              prop="date">
+      <DatePicker type="date"
+                  v-model="formData.date"
+                  placeholder="请选择日期"></DatePicker>
+    </FormItem>
+    <FormItem>
+      <Button type="primary"
+              @click="handleSubmit">Submit</Button>
+      <Button @click="handleReset"
+              style="margin-left: 8px">Reset</Button>
+    </FormItem>
+  </Form>
+</template>
+<script>
+export default {
+  data () {
+    return {
+      formData: {
+        "user": "",
+        "pass": "",
+        "city": "",
+        "date": ""
+      },
+      ruleValidate: {
+        user: [{ required: true, message: "请填写用户名", trigger: "blur" }],
+        pass: [{ required: true, message: "请填写密码", trigger: "blur" }],
+        city: [{ required: true, message: "请选择城市", trigger: "change" }],
+        date: [{ required: true, type: 'date', message: '请选择日期', trigger: 'change' }]
+      }
+    }
+  },
+  methods: {
+    handleSubmit () {
+      this.$refs['formValidate'].validate((valid) => {
+        if (valid) {
+          this.$Message.success('Success!');
+        } else {
+          this.$Message.error('Fail!');
+        }
+      })
+    },
+    handleReset () {
+      this.$refs.formValidate.resetFields();
+    }
+  }
+}
+</script>
